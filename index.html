@@ -1,0 +1,1784 @@
+
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🌻 Girasol Especial + Carta de Amistad</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    /* Reset global y estilos body */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      min-height:100vh; 
+      display:flex; 
+      flex-direction:column; 
+      align-items:center; 
+      justify-content:flex-start; 
+      background:linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); 
+      padding:20px; 
+      overflow-x: hidden;
+    }
+    
+    /* --- Girasol Section --- */
+    .sun-container { 
+      background:white; 
+      border-radius:20px; 
+      padding:40px; 
+      box-shadow:0 20px 40px rgba(0,0,0,0.25); 
+      max-width:900px; 
+      width:100%; 
+      text-align:center; 
+      margin-bottom:40px; 
+      position:relative; 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 3px solid rgba(255,215,0,0.3);
+    }
+    
+    .sun-title {
+      color: #2a5298;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+      animation: titleGlow 3s ease-in-out infinite;
+    }
+    
+    @keyframes titleGlow {
+      0%, 100% { text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+      50% { text-shadow: 2px 2px 20px rgba(255,215,0,0.5); }
+    }
+    
+    .sun-subtitle {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 25px;
+      font-weight: 300;
+    }
+    
+    .generate-btn { 
+      background:linear-gradient(135deg,#FFD700 0%, #FFA500 50%, #FF8C00 100%); 
+      color:white; 
+      border:none; 
+      padding:18px 40px; 
+      font-size:1.3rem; 
+      font-weight: 600;
+      border-radius:50px; 
+      cursor:pointer; 
+      margin:25px auto; 
+      box-shadow:0 6px 20px rgba(255,140,0,0.4); 
+      transition:all .4s ease;
+      display: block;
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .generate-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+    
+    .generate-btn:hover::before {
+      left: 100%;
+    }
+    
+    .generate-btn:hover { 
+      transform:translateY(-3px) scale(1.05); 
+      box-shadow:0 10px 30px rgba(255,140,0,0.5); 
+    }
+    
+    .generate-btn:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+    
+    .generate-btn:disabled { 
+      opacity:.6; 
+      cursor:not-allowed;
+      transform: none;
+    }
+    
+    .canvas-container {
+      margin: 30px 0;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 100%);
+      padding: 20px;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.6s ease;
+      display: none;
+    }
+    
+    .canvas-container.show {
+      opacity: 1;
+      transform: scale(1);
+      display: block;
+    }
+    
+    #sunflowerCanvas {
+      display: block;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #87CEEB 0%, #98D8E8 100%);
+    }
+    
+    .loading { 
+      display:none; 
+      margin:20px 0;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .spinner { 
+      border:5px solid #f3f3f3; 
+      border-top:5px solid #FFD700; 
+      border-radius:50%; 
+      width:60px; 
+      height:60px; 
+      animation:spin 1s linear infinite; 
+      margin:0 auto 15px;
+    }
+    
+    @keyframes spin { 
+      0%{transform:rotate(0deg)}
+      100%{transform:rotate(360deg)} 
+    }
+    
+    .loading-text {
+      color: #666;
+      font-size: 1.1rem;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    
+    .message { 
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%); 
+      color:white; 
+      padding:30px; 
+      border-radius:20px; 
+      font-size:1.1rem; 
+      line-height:1.8; 
+      margin-top:30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    
+    .message h3 {
+      margin-bottom: 15px;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .message p {
+      margin-bottom: 15px;
+    }
+    
+    .message strong {
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    
+    #sunflowerCount { 
+      margin-top:20px; 
+      font-size:1.2rem; 
+      color:#FFD700; 
+      font-weight: 600;
+      background: rgba(255,215,0,0.1);
+      padding: 10px 20px;
+      border-radius: 25px;
+      display: inline-block;
+    }
+    
+    .particles { 
+      position:fixed; 
+      top:0; 
+      left:0; 
+      width:100%; 
+      height:100%; 
+      pointer-events:none; 
+      z-index:-1; 
+    }
+    
+    .particle { 
+      position:absolute; 
+      width:6px; 
+      height:6px; 
+      background:#FFD700; 
+      border-radius:50%; 
+      animation:float 6s ease-in-out infinite;
+      box-shadow: 0 0 10px rgba(255,215,0,0.5);
+    }
+    
+    @keyframes float{
+      0%,100%{transform:translateY(0) scale(1);opacity:0;}
+      50%{transform:translateY(-120px) scale(1.5);opacity:1;}
+    }
+
+    /* --- Carta de Amistad Section --- */
+    .friendship-container { 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      max-width: 700px;
+      width: 95%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .friendship-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: shimmer 4s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(180deg); }
+    }
+    
+    .floating-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .floating-star {
+      position: absolute;
+      font-size: 20px;
+      color: rgba(255,255,255,0.7);
+      animation: floatStar 3s ease-in-out infinite;
+    }
+    
+    @keyframes floatStar {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    
+    .intro-screen, .friendship-letter {
+      background: rgba(255,255,255,0.95);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      border: 2px solid rgba(255,255,255,0.3);
+      position: relative;
+      z-index: 2;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .star-container {
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .main-star {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(45deg, #FFD700, #FFA500);
+      position: relative;
+      margin: 0 auto;
+      animation: starPulse 2s infinite;
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    
+    @keyframes starPulse {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.1) rotate(180deg); }
+    }
+    
+    .year-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .sparkles {
+      color: #FFD700;
+      font-size: 14px;
+      margin-bottom: 15px;
+      animation: sparkle 2s infinite;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    
+    .intro-text {
+      font-family: 'Dancing Script', cursive;
+      font-size: 28px;
+      font-weight: 600;
+      color: #667eea;
+      margin-bottom: 25px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .date-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 15px 20px;
+      border: 3px solid #667eea;
+      border-radius: 30px;
+      font-size: 16px;
+      text-align: center;
+      margin: 20px auto;
+      transition: all 0.3s ease;
+      outline: none;
+      background: rgba(255,255,255,0.9);
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .date-input:focus {
+      border-color: #f093fb;
+      box-shadow: 0 0 20px rgba(240,147,251,0.4);
+      transform: scale(1.05);
+    }
+    
+    .open-btn {
+      background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+      color: white;
+      border: none;
+      padding: 18px 35px;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      margin: 20px auto;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .open-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+    
+    .open-btn:hover::before {
+      left: 100%;
+    }
+    
+    .open-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(102,126,234,0.4);
+    }
+    
+    .error-message {
+      color: #FF6B6B;
+      font-size: 14px;
+      margin-top: 15px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      background: rgba(255,107,107,0.1);
+      padding: 10px;
+      border-radius: 15px;
+      border: 1px solid rgba(255,107,107,0.3);
+    }
+    
+    .error-message.show { opacity: 1; }
+    
+    .friendship-letter {
+      display: none;
+      animation: slideIn 0.8s ease;
+      border: 3px solid #667eea;
+      text-align: left;
+      padding: 50px;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(50px) scale(0.9); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    .letter-sparkles {
+      position: absolute;
+      top: 20px;
+      left: 25px;
+      color: #FFD700;
+      font-size: 18px;
+      animation: sparkle 2s infinite;
+    }
+    
+    .letter-sparkles.right {
+      left: auto;
+      right: 25px;
+      animation-delay: 1s;
+    }
+    
+    .letter-title {
+      font-family: 'Dancing Script', cursive;
+      color: #667eea;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .letter-content {
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+    
+    .letter-text {
+      flex: 1;
+      color: #555;
+      font-size: 16px;
+      line-height: 1.8;
+      text-align: justify;
+      font-weight: 400;
+    }
+    
+    .qr-container {
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      border-radius: 15px;
+      position: relative;
+      cursor: pointer;
+      margin: 0 auto;
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .qr-container:hover {
+      transform: scale(1.05);
+    }
+    
+    .scratch-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, #C0C0C0, #E8E8E8, #C0C0C0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: #666;
+      transition: all 0.5s ease;
+      padding: 15px;
+      text-align: center;
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .scratch-overlay::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+      transition: left 0.8s;
+    }
+    
+    .scratch-overlay:hover::before {
+      left: 100%;
+    }
+    
+    .scratch-overlay.scratching {
+      animation: scratchEffect 0.8s ease-out;
+    }
+    
+    @keyframes scratchEffect {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; transform: scale(1.1); }
+      100% { opacity: 0; transform: scale(0.8); }
+    }
+    
+    .qr-code {
+      width: 120px;
+      height: 120px;
+      background: white;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      position: absolute;
+      inset: 15px;
+      opacity: 0;
+      transition: all 0.5s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    .qr-code.revealed {
+      opacity: 1;
+      animation: revealQR 0.6s ease;
+    }
+    
+    @keyframes revealQR {
+      0% { transform: scale(0.5) rotate(180deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    
+    .qr-pattern {
+      width: 100px;
+      height: 100px;
+      background: #000;
+      position: relative;
+      border-radius: 5px;
+    }
+    
+    .qr-pattern::after {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: #4CAF50;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      content: '♪';
+    }
+    
+    .signature {
+      text-align: center;
+      margin-top: 40px;
+      color: #667eea;
+      font-style: italic;
+      font-weight: 600;
+      font-size: 18px;
+      font-family: 'Dancing Script', cursive;
+    }
+    
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(102,126,234,0.1);
+      border: 2px solid #667eea;
+      font-size: 20px;
+      cursor: pointer;
+      color: #667eea;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+    
+    .back-btn:hover {
+      background: #667eea;
+      color: white;
+      transform: scale(1.1);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .friendship-container {
+        max-width: 95%;
+        padding: 20px;
+      }
+      
+      .intro-screen, .friendship-letter {
+        padding: 30px 20px;
+      }
+      
+      .letter-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .qr-container {
+        width: 120px;
+        height: 120px;
+        margin: 20px auto;
+      }
+      
+      .intro-text {
+        font-size: 24px;
+      }
+      
+      .letter-title {
+        font-size: 28px;
+      }
+      
+      .sun-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Partículas doradas -->
+  <div class="particles" id="particles"></div>
+
+  <!-- SECCIÓN GIRASOL -->
+  <div class="sun-container">
+    <h1 class="sun-title">🌻 Girasol Especial 🌻</h1>
+    <p class="sun-subtitle">Un regalo único creado con amor matemático</p>
+    
+    <button class="generate-btn" onclick="generateSunflower()" id="generateBtn">
+      ✨ Crear Mi Girasol ✨
+    </button>
+    
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p class="loading-text">Cultivando tu girasol especial con la magia de Fibonacci...</p>
+    </div>
+    
+    <div class="canvas-container" id="canvasContainer">
+      <canvas id="sunflowerCanvas" width="600" height="600"></canvas>
+    </div>
+    
+    <p id="sunflowerCount"></p>
+    
+    <div class="message">
+      <h3>💖 Motivo Especial 💖</h3>
+      <p>Estos girasoles han sido creados especialmente para ti. 
+      Cada semilla está posicionada siguiendo una secuencia, 
+      creando la espiral perfecta que vemos en la naturaleza.</p>
+      <p><strong>Y así como este girasol siempre busca la luz del sol, 
+      espero que en tu vida siempre encuentres la felicidad y puedas disfrutar
+      de muchos días soleados. ¡Feliz Cumpleaños! 🎉</strong></p>
+    </div>
+  </div>
+
+  <!-- SECCIÓN CARTA DE AMISTAD -->
+  <div class="friendship-container">
+    <div class="floating-elements" id="floatingElements"></div>
+    
+    <div class="intro-screen" id="introScreen">
+      <div class="star-container">
+        <div class="main-star">
+          <div class="year-badge">2025</div>
+        </div>
+      </div>
+      
+      <div class="sparkles">✨ ★ ✨ ★ ✨</div>
+      
+      <div class="intro-text">Introduce tu fecha especial</div>
+      
+      <input type="date" class="date-input" id="dateInput" placeholder="Selecciona una fecha">
+      
+      <button class="open-btn" id="openBtn">Descubrir Sorpresa</button>
+      
+      <div class="error-message" id="errorMessage">Por favor, selecciona tu fecha de cumple usu</div>
+    </div>
+
+    <div class="friendship-letter" id="friendshipLetter">
+      <button class="back-btn" id="backBtn">←</button>
+      
+      <div class="letter-sparkles">✨</div>
+      <div class="letter-sparkles right">✨</div>
+      
+      <h2 class="letter-title">Querida Amiga,</h2>
+      
+      <div class="letter-content">
+        <div class="letter-text">
+          Cada momento compartido ha sido un tesoro que guardare por siempre. 
+          Nuestra amistad es como una estrella que brilla en los momentos más oscuros, 
+          y como el sol que nos da energía para seguir adelante. 
+          
+          Gracias por ser esa persona especial que siempre está ahí, 
+          por las risas compartidas, los consejos sinceros y por hacer que cada día sea más brillante que el otro. 
+          
+          ¡Esta pequeña sorpresa es para celebrar nuestra hermosa amistad! ¡¡y desearte feliz cumpleaños!!
+        </div>
+        
+        <div class="qr-container" id="qrContainer">
+          <div class="scratch-overlay" id="scratchOverlay">
+            ¡Toca aquí para revelar tu sorpresa musical! 🎵
+          </div>
+          <div class="qr-code" id="qrCode">
+            <div class="qr-pattern"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="signature">✨ Con cariño y amistad eterna ✨</div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    let sunflowerCount = 0;
+
+    // ---- Explosión de emojis al presionar botones ----
+    function createEmojiExplosion() {
+      const emojis = ['🌻', '🌼', '🌸', '🌺', '✨', '⭐', '🌟', '💫', '🌷', '🌹', '💐', '🦋', '🐝'];
+      const numEmojis = 30 + Math.floor(Math.random() * 20);
+      
+      for (let i = 0; i < numEmojis; i++) {
+        const emoji = document.createElement('div');
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.position = 'fixed';
+        emoji.style.fontSize = (20 + Math.random() * 30) + 'px';
+        emoji.style.left = '50%';
+        emoji.style.top = '50%';
+        emoji.style.pointerEvents = 'none';
+        emoji.style.zIndex = '10000';
+        emoji.style.userSelect = 'none';
+        
+        // Dirección aleatoria
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 200 + Math.random() * 300;
+        const rotation = Math.random() * 720 - 360;
+        const duration = 1.5 + Math.random() * 1;
+        
+        emoji.style.animation = `emojiExplosion ${duration}s ease-out forwards`;
+        emoji.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+        emoji.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+        emoji.style.setProperty('--rotation', rotation + 'deg');
+        
+        document.body.appendChild(emoji);
+        
+        setTimeout(() => emoji.remove(), duration * 1000);
+      }
+    }
+    
+    // Agregar keyframes para la animación
+    const emojiAnimationStyle = document.createElement('style');
+    emojiAnimationStyle.textContent = `
+      @keyframes emojiExplosion {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg) scale(0);
+          opacity: 1;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(var(--rotation)) scale(1);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(emojiAnimationStyle);
+
+    // ---- Generador de Girasol con Canvas ----
+    function generateSunflower() {
+      const btn = document.getElementById('generateBtn');
+      const loading = document.getElementById('loading');
+      const container = document.getElementById('canvasContainer');
+      const canvas = document.getElementById('sunflowerCanvas');
+      const ctx = canvas.getContext('2d');
+      const countEl = document.getElementById('sunflowerCount');
+      
+      // ¡Explosión de emojis!
+      createEmojiExplosion();
+      
+      btn.disabled = true;
+      loading.style.display = 'flex';
+      container.classList.remove('show');
+      
+      // Simular tiempo de "cultivo"
+      setTimeout(() => {
+        // Limpiar canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Variables aleatorias para variedad
+        const scenarioType = Math.floor(Math.random() * 4); // 4 tipos de escenarios
+        const numFlowers = Math.floor(Math.random() * 100); // Para determinar cantidad
+        let flowerLayout;
+        
+        // Determinar distribución de flores
+        if (numFlowers < 30) {
+          flowerLayout = 'single'; // 1 girasol grande
+        } else if (numFlowers < 60) {
+          flowerLayout = 'double'; // 2 girasoles
+        } else if (numFlowers < 85) {
+          flowerLayout = 'triple'; // 3 girasoles
+        } else {
+          flowerLayout = 'field'; // Campo de girasoles (5-7)
+        }
+        
+        const hasButterflies = Math.random() > 0.3; // 70% probabilidad
+        const hasBees = Math.random() > 0.4; // 60% probabilidad
+        const hasClouds = true; // Siempre mostrar nubes
+        
+        // Dibujar fondo
+        drawBackground(ctx, canvas.width, canvas.height, scenarioType);
+        
+        // Dibujar nubes si aplica
+        if (hasClouds) {
+          drawClouds(ctx, canvas.width);
+        }
+        
+        // Dibujar girasol(es) según el layout
+        if (flowerLayout === 'single') {
+          const size = 1.0 + Math.random() * 0.3;
+          drawCompleteSunflower(ctx, canvas.width / 2, canvas.height * 0.35, size);
+        } else if (flowerLayout === 'double') {
+          const size1 = 0.8 + Math.random() * 0.3;
+          const size2 = 0.7 + Math.random() * 0.3;
+          drawCompleteSunflower(ctx, canvas.width * 0.35, canvas.height * 0.4, size1);
+          drawCompleteSunflower(ctx, canvas.width * 0.68, canvas.height * 0.45, size2);
+        } else if (flowerLayout === 'triple') {
+          const size1 = 0.75 + Math.random() * 0.25;
+          const size2 = 0.7 + Math.random() * 0.2;
+          const size3 = 0.65 + Math.random() * 0.2;
+          drawCompleteSunflower(ctx, canvas.width * 0.28, canvas.height * 0.42, size1);
+          drawCompleteSunflower(ctx, canvas.width * 0.55, canvas.height * 0.38, size2);
+          drawCompleteSunflower(ctx, canvas.width * 0.75, canvas.height * 0.48, size3);
+        } else {
+          // Campo de girasoles (5-9 girasoles)
+          const numInField = 5 + Math.floor(Math.random() * 5);
+          const positions = [];
+          
+          // Generar posiciones aleatorias sin superposición
+          for (let i = 0; i < numInField; i++) {
+            let x, y, size, overlapping;
+            let attempts = 0;
+            
+            do {
+              overlapping = false;
+              x = (0.12 + Math.random() * 0.76) * canvas.width;
+              y = canvas.height * (0.35 + Math.random() * 0.18);
+              size = 0.45 + Math.random() * 0.35;
+              
+              // Verificar superposición con girasoles existentes
+              for (let pos of positions) {
+                const distance = Math.sqrt((x - pos.x) ** 2 + (y - pos.y) ** 2);
+                const minDistance = (size + pos.size) * 100; // Espacio mínimo entre flores
+                if (distance < minDistance) {
+                  overlapping = true;
+                  break;
+                }
+              }
+              attempts++;
+            } while (overlapping && attempts < 50);
+            
+            if (!overlapping) {
+              positions.push({ x, y, size });
+            }
+          }
+          
+          // Dibujar en orden de profundidad (más atrás primero)
+          positions.sort((a, b) => a.y - b.y);
+          positions.forEach(pos => {
+            drawCompleteSunflower(ctx, pos.x, pos.y, pos.size);
+          });
+        }
+        
+        // Dibujar mariposas
+        if (hasButterflies) {
+          const numButterflies = Math.floor(Math.random() * 2) + 1;
+          for (let i = 0; i < numButterflies; i++) {
+            const x = 100 + Math.random() * (canvas.width - 200);
+            const y = 50 + Math.random() * 200;
+            drawButterfly(ctx, x, y, Math.random() * 0.6 + 0.8);
+          }
+        }
+        
+        // Dibujar abejas
+        if (hasBees) {
+          const numBees = Math.floor(Math.random() * 2) + 1;
+          for (let i = 0; i < numBees; i++) {
+            const x = 100 + Math.random() * (canvas.width - 200);
+            const y = 100 + Math.random() * 250;
+            drawBee(ctx, x, y);
+          }
+        }
+        
+        loading.style.display = 'none';
+        container.style.display = 'block';
+        container.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = '🌻 Cultivar Otro Girasol 🌻';
+        
+        sunflowerCount++;
+        countEl.textContent = `🌻 Girasoles generados: ${sunflowerCount}`;
+      }, 2000);
+    }
+    
+    function drawBackground(ctx, width, height, type) {
+      // Diferentes tipos de fondos
+      const backgrounds = [
+        // Cielo azul con césped
+        () => {
+          const skyGradient = ctx.createLinearGradient(0, 0, 0, height * 0.6);
+          skyGradient.addColorStop(0, '#87CEEB');
+          skyGradient.addColorStop(1, '#B0E0E6');
+          ctx.fillStyle = skyGradient;
+          ctx.fillRect(0, 0, width, height * 0.6);
+          
+          const grassGradient = ctx.createLinearGradient(0, height * 0.6, 0, height);
+          grassGradient.addColorStop(0, '#90EE90');
+          grassGradient.addColorStop(0.5, '#7FBF7F');
+          grassGradient.addColorStop(1, '#228B22');
+          ctx.fillStyle = grassGradient;
+          ctx.fillRect(0, height * 0.6, width, height * 0.4);
+        },
+        // Atardecer
+        () => {
+          const gradient = ctx.createLinearGradient(0, 0, 0, height);
+          gradient.addColorStop(0, '#FFB347');
+          gradient.addColorStop(0.4, '#FFCC99');
+          gradient.addColorStop(0.7, '#90EE90');
+          gradient.addColorStop(1, '#228B22');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+        },
+        // Día soleado brillante
+        () => {
+          const gradient = ctx.createLinearGradient(0, 0, 0, height);
+          gradient.addColorStop(0, '#87CEEB');
+          gradient.addColorStop(0.5, '#ADD8E6');
+          gradient.addColorStop(0.7, '#98FB98');
+          gradient.addColorStop(1, '#32CD32');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+          
+          // Sol brillante
+          const sunGradient = ctx.createRadialGradient(width * 0.85, 80, 0, width * 0.85, 80, 60);
+          sunGradient.addColorStop(0, '#FFF000');
+          sunGradient.addColorStop(0.3, '#FFD700');
+          sunGradient.addColorStop(0.6, '#FFA500');
+          sunGradient.addColorStop(1, 'rgba(255, 215, 0, 0)');
+          ctx.fillStyle = sunGradient;
+          ctx.beginPath();
+          ctx.arc(width * 0.85, 80, 60, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Rayos del sol
+          ctx.strokeStyle = 'rgba(255, 215, 0, 0.3)';
+          ctx.lineWidth = 3;
+          for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * Math.PI * 2;
+            ctx.beginPath();
+            ctx.moveTo(width * 0.85 + Math.cos(angle) * 35, 80 + Math.sin(angle) * 35);
+            ctx.lineTo(width * 0.85 + Math.cos(angle) * 75, 80 + Math.sin(angle) * 75);
+            ctx.stroke();
+          }
+        },
+        // Campo de primavera
+        () => {
+          const gradient = ctx.createLinearGradient(0, 0, 0, height);
+          gradient.addColorStop(0, '#B0E0E6');
+          gradient.addColorStop(0.6, '#98D8E8');
+          gradient.addColorStop(0.65, '#90EE90');
+          gradient.addColorStop(1, '#3CB371');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+        }
+      ];
+      
+      backgrounds[type]();
+      
+      // Agregar textura de césped mejorada con diferentes tipos de hierbas
+      for (let i = 0; i < 100; i++) {
+        const x = Math.random() * width;
+        const y = height * 0.65 + Math.random() * (height * 0.35);
+        const grassHeight = 10 + Math.random() * 20;
+        const grassType = Math.floor(Math.random() * 3);
+        
+        if (grassType === 0) {
+          // Hierba delgada
+          ctx.strokeStyle = `rgba(34, 139, 34, ${0.2 + Math.random() * 0.3})`;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.quadraticCurveTo(x + (Math.random() - 0.5) * 5, y - grassHeight / 2, x + (Math.random() - 0.5) * 10, y - grassHeight);
+          ctx.stroke();
+        } else if (grassType === 1) {
+          // Hierba gruesa
+          ctx.strokeStyle = `rgba(46, 125, 50, ${0.3 + Math.random() * 0.3})`;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + (Math.random() - 0.5) * 3, y - grassHeight);
+          ctx.stroke();
+        } else {
+          // Hierba en forma de V
+          ctx.strokeStyle = `rgba(27, 94, 32, ${0.2 + Math.random() * 0.2})`;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(x - 3, y);
+          ctx.lineTo(x, y - grassHeight * 0.8);
+          ctx.lineTo(x + 3, y);
+          ctx.stroke();
+        }
+      }
+      
+      // Pequeñas flores silvestres en el césped
+      for (let i = 0; i < 15; i++) {
+        const x = Math.random() * width;
+        const y = height * 0.7 + Math.random() * (height * 0.25);
+        const flowerColor = ['#FFB6C1', '#FF69B4', '#FFA07A', '#FFFFE0', '#E6E6FA'][Math.floor(Math.random() * 5)];
+        
+        ctx.fillStyle = flowerColor;
+        for (let j = 0; j < 5; j++) {
+          ctx.beginPath();
+          const angle = (j / 5) * Math.PI * 2;
+          ctx.arc(x + Math.cos(angle) * 3, y + Math.sin(angle) * 3, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        
+        // Centro de la flor
+        ctx.fillStyle = '#FFD700';
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    
+    function drawClouds(ctx, width) {
+      const numClouds = 3 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < numClouds; i++) {
+        const x = Math.random() * width;
+        const y = 30 + Math.random() * 200;
+        const size = 40 + Math.random() * 50;
+        drawCloud(ctx, x, y, size);
+      }
+    }
+    
+    function drawCloud(ctx, x, y, size) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+      ctx.shadowBlur = 10;
+      
+      ctx.beginPath();
+      ctx.arc(x - size * 0.3, y, size * 0.5, 0, Math.PI * 2);
+      ctx.arc(x, y - size * 0.15, size * 0.6, 0, Math.PI * 2);
+      ctx.arc(x + size * 0.35, y, size * 0.55, 0, Math.PI * 2);
+      ctx.arc(x + size * 0.7, y + size * 0.1, size * 0.45, 0, Math.PI * 2);
+      ctx.arc(x + size * 0.2, y + size * 0.2, size * 0.5, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.shadowBlur = 0;
+    }
+    
+    function drawCompleteSunflower(ctx, centerX, centerY, sizeMultiplier) {
+      const scale = 2.8 * sizeMultiplier;
+      const numSeeds = 280 + Math.floor(Math.random() * 80);
+      
+      // Dibujar tallo
+      drawStem(ctx, centerX, centerY, sizeMultiplier);
+      
+      // Dibujar hojas
+      drawLeaves(ctx, centerX, centerY, sizeMultiplier);
+      
+      // Dibujar pétalos primero (atrás)
+      drawPetals(ctx, centerX, centerY, numSeeds, scale, sizeMultiplier);
+      
+      // Dibujar centro con semillas (encima de los pétalos)
+      drawCenter(ctx, centerX, centerY, numSeeds, scale);
+    }
+    
+    function drawStem(ctx, x, y, size) {
+      const stemHeight = 250 * size;
+      const stemWidth = 12 * size;
+      
+      // Curva natural del tallo
+      const curve = (Math.random() - 0.5) * 30 * size;
+      
+      ctx.save();
+      
+      // Sombra del tallo
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      ctx.beginPath();
+      ctx.moveTo(x - stemWidth/2 + 3, y);
+      ctx.quadraticCurveTo(
+        x + curve + 3, y + stemHeight/2,
+        x + 3, y + stemHeight
+      );
+      ctx.lineTo(x + stemWidth/2 + 3, y + stemHeight);
+      ctx.quadraticCurveTo(
+        x + curve + stemWidth/2 + 3, y + stemHeight/2,
+        x + stemWidth/2 + 3, y
+      );
+      ctx.closePath();
+      ctx.fill();
+      
+      // Gradiente para el tallo (más suave)
+      const gradient = ctx.createLinearGradient(x - stemWidth/2, y, x + stemWidth/2, y);
+      gradient.addColorStop(0, '#3D6B2E');
+      gradient.addColorStop(0.3, '#4A7C2C');
+      gradient.addColorStop(0.5, '#5A9338');
+      gradient.addColorStop(0.7, '#4A7C2C');
+      gradient.addColorStop(1, '#3D6B2E');
+      
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.moveTo(x - stemWidth/2, y);
+      ctx.quadraticCurveTo(
+        x + curve - stemWidth/3, y + stemHeight/2,
+        x, y + stemHeight
+      );
+      ctx.lineTo(x + stemWidth/2, y + stemHeight);
+      ctx.quadraticCurveTo(
+        x + curve + stemWidth/3, y + stemHeight/2,
+        x + stemWidth/2, y
+      );
+      ctx.closePath();
+      ctx.fill();
+      
+      // Línea central del tallo (más suave)
+      ctx.strokeStyle = 'rgba(45, 80, 22, 0.5)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.quadraticCurveTo(x + curve, y + stemHeight/2, x, y + stemHeight);
+      ctx.stroke();
+      
+      // Líneas laterales para textura
+      ctx.strokeStyle = 'rgba(90, 147, 56, 0.3)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 5; i++) {
+        const yPos = y + (i / 5) * stemHeight;
+        ctx.beginPath();
+        ctx.moveTo(x - stemWidth/3, yPos);
+        ctx.lineTo(x - stemWidth/3, yPos + stemHeight/6);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(x + stemWidth/3, yPos);
+        ctx.lineTo(x + stemWidth/3, yPos + stemHeight/6);
+        ctx.stroke();
+      }
+      
+      // Bordes redondeados en la parte superior
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.arc(x - stemWidth/2, y, stemWidth/4, 0, Math.PI * 2);
+      ctx.arc(x + stemWidth/2, y, stemWidth/4, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.restore();
+    }
+    
+    function drawLeaves(ctx, x, y, size) {
+      const leafPositions = [
+        { x: -40 * size, y: 80 * size, rotation: -0.5 },
+        { x: 35 * size, y: 120 * size, rotation: 0.5 },
+        { x: -30 * size, y: 160 * size, rotation: -0.3 }
+      ];
+      
+      leafPositions.forEach(pos => {
+        ctx.save();
+        ctx.translate(x + pos.x, y + pos.y);
+        ctx.rotate(pos.rotation);
+        
+        const gradient = ctx.createLinearGradient(-20, -10, 20, 10);
+        gradient.addColorStop(0, '#2D5016');
+        gradient.addColorStop(0.5, '#4A7C2C');
+        gradient.addColorStop(1, '#2D5016');
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 25 * size, 12 * size, 0, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Vena central
+        ctx.strokeStyle = '#2D5016';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(-20 * size, 0);
+        ctx.lineTo(20 * size, 0);
+        ctx.stroke();
+        
+        ctx.restore();
+      });
+    }
+    
+    function drawPetals(ctx, cx, cy, numSeeds, scale, sizeMultiplier) {
+      const numPetals = 16 + Math.floor(Math.random() * 5);
+      const petalLength = scale * Math.sqrt(numSeeds) * 0.85 * sizeMultiplier;
+      const petalWidth = petalLength * 0.45;
+      const randomRotation = Math.random() * 0.3;
+      
+      for (let i = 0; i < numPetals; i++) {
+        const angle = (i / numPetals) * 2 * Math.PI + randomRotation;
+        
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(angle);
+        
+        // Pétalo con forma más realista (como lágrima)
+        const petalHue = 45 + Math.random() * 15;
+        
+        // Sombra del pétalo
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(
+          -petalWidth * 0.6, -petalLength * 0.3,
+          -petalWidth * 0.4, -petalLength * 0.85,
+          0, -petalLength
+        );
+        ctx.bezierCurveTo(
+          petalWidth * 0.4, -petalLength * 0.85,
+          petalWidth * 0.6, -petalLength * 0.3,
+          0, 0
+        );
+        ctx.fill();
+        
+        // Gradiente del pétalo (amarillo brillante)
+        const gradient = ctx.createRadialGradient(0, -petalLength * 0.3, 0, 0, -petalLength * 0.3, petalLength);
+        gradient.addColorStop(0, `hsl(${petalHue}, 100%, 70%)`);
+        gradient.addColorStop(0.5, `hsl(${petalHue}, 100%, 58%)`);
+        gradient.addColorStop(0.85, `hsl(${petalHue - 5}, 95%, 50%)`);
+        gradient.addColorStop(1, `hsl(${petalHue - 10}, 90%, 45%)`);
+        
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(
+          -petalWidth * 0.55, -petalLength * 0.3,
+          -petalWidth * 0.35, -petalLength * 0.85,
+          0, -petalLength
+        );
+        ctx.bezierCurveTo(
+          petalWidth * 0.35, -petalLength * 0.85,
+          petalWidth * 0.55, -petalLength * 0.3,
+          0, 0
+        );
+        ctx.closePath();
+        ctx.fill();
+        
+        // Borde oscuro del pétalo
+        ctx.strokeStyle = `hsl(${petalHue - 15}, 80%, 40%)`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        
+        // Venas del pétalo (textura)
+        ctx.strokeStyle = `rgba(255, 165, 0, 0.25)`;
+        ctx.lineWidth = 1;
+        
+        // Vena central
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -petalLength * 0.95);
+        ctx.stroke();
+        
+        // Venas laterales
+        for (let v = 0; v < 3; v++) {
+          const vPos = -petalLength * (0.3 + v * 0.25);
+          ctx.beginPath();
+          ctx.moveTo(0, vPos);
+          ctx.quadraticCurveTo(-petalWidth * 0.2, vPos - 15, -petalWidth * 0.3, vPos - 25);
+          ctx.stroke();
+          
+          ctx.beginPath();
+          ctx.moveTo(0, vPos);
+          ctx.quadraticCurveTo(petalWidth * 0.2, vPos - 15, petalWidth * 0.3, vPos - 25);
+          ctx.stroke();
+        }
+        
+        // Brillo en el pétalo (highlight)
+        const highlightGradient = ctx.createRadialGradient(
+          -petalWidth * 0.15, -petalLength * 0.6, 0,
+          -petalWidth * 0.15, -petalLength * 0.6, petalWidth * 0.4
+        );
+        highlightGradient.addColorStop(0, 'rgba(255, 255, 200, 0.4)');
+        highlightGradient.addColorStop(1, 'rgba(255, 255, 200, 0)');
+        
+        ctx.fillStyle = highlightGradient;
+        ctx.beginPath();
+        ctx.ellipse(-petalWidth * 0.15, -petalLength * 0.6, petalWidth * 0.3, petalLength * 0.2, 0.3, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.restore();
+      }
+    }
+    
+    function drawCenter(ctx, cx, cy, numSeeds, scale) {
+      const goldenAngle = 137.5 * Math.PI / 180;
+      
+      // Radio del centro (más pequeño)
+      const centerRadius = scale * Math.sqrt(numSeeds) * 0.38;
+      
+      // Fondo del centro con gradiente radial más natural
+      const centerGradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, centerRadius);
+      centerGradient.addColorStop(0, '#5D4037');
+      centerGradient.addColorStop(0.3, '#6D4C41');
+      centerGradient.addColorStop(0.6, '#4E342E');
+      centerGradient.addColorStop(1, '#3E2723');
+      ctx.fillStyle = centerGradient;
+      ctx.beginPath();
+      ctx.arc(cx, cy, centerRadius * 1.05, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Anillo exterior más claro
+      ctx.strokeStyle = 'rgba(121, 85, 72, 0.8)';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, centerRadius * 0.95, 0, Math.PI * 2);
+      ctx.stroke();
+      
+      // Dibujar semillas en espiral de Fibonacci
+      const spirals = [];
+      for (let i = 0; i < numSeeds * 0.85; i++) {
+        const angle = i * goldenAngle;
+        const radius = scale * Math.sqrt(i) * 0.85;
+        const x = cx + radius * Math.cos(angle);
+        const y = cy + radius * Math.sin(angle);
+        
+        const distFromCenter = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
+        if (distFromCenter > centerRadius * 0.92) continue;
+        
+        spirals.push({ x, y, angle: angle, dist: distFromCenter, index: i });
+      }
+      
+      // Dibujar las semillas
+      spirals.forEach(seed => {
+        const { x, y, dist, index } = seed;
+        
+        // Tamaño basado en la distancia del centro (más grandes en el exterior)
+        const sizeFactor = Math.min(dist / (centerRadius * 0.5), 1);
+        const seedSize = (2.5 + sizeFactor * 1.8) * (0.9 + Math.random() * 0.2);
+        
+        // Colores más variados y naturales
+        const colorVariation = Math.floor(Math.random() * 5);
+        let hue, saturation, lightness;
+        
+        if (colorVariation === 0) {
+          // Semillas marrones claras
+          hue = 30 + Math.random() * 10;
+          saturation = 35 + Math.random() * 15;
+          lightness = 35 + Math.random() * 10;
+        } else if (colorVariation === 1) {
+          // Semillas marrones medias
+          hue = 25 + Math.random() * 8;
+          saturation = 40 + Math.random() * 15;
+          lightness = 25 + Math.random() * 10;
+        } else if (colorVariation === 2) {
+          // Semillas oscuras
+          hue = 20 + Math.random() * 10;
+          saturation = 30 + Math.random() * 15;
+          lightness = 18 + Math.random() * 8;
+        } else if (colorVariation === 3) {
+          // Semillas doradas
+          hue = 35 + Math.random() * 12;
+          saturation = 50 + Math.random() * 20;
+          lightness = 30 + Math.random() * 12;
+        } else {
+          // Semillas muy oscuras
+          hue = 22 + Math.random() * 8;
+          saturation = 25 + Math.random() * 10;
+          lightness = 15 + Math.random() * 8;
+        }
+        
+        // Sombra pronunciada
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        ctx.beginPath();
+        ctx.ellipse(x + seedSize * 0.4, y + seedSize * 0.4, seedSize * 0.85, seedSize * 1.0, seed.angle, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Base de la semilla (forma ovalada siguiendo la espiral)
+        const baseGradient = ctx.createRadialGradient(x, y, 0, x, y, seedSize * 1.2);
+        baseGradient.addColorStop(0, `hsl(${hue}, ${saturation}%, ${lightness + 8}%)`);
+        baseGradient.addColorStop(0.6, `hsl(${hue}, ${saturation}%, ${lightness}%)`);
+        baseGradient.addColorStop(1, `hsl(${hue}, ${saturation - 10}%, ${lightness - 12}%)`);
+        
+        ctx.fillStyle = baseGradient;
+        ctx.beginPath();
+        ctx.ellipse(x, y, seedSize * 0.8, seedSize * 0.95, seed.angle, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Borde oscuro para definición
+        ctx.strokeStyle = `hsl(${hue}, ${saturation}%, ${lightness - 25}%)`;
+        ctx.lineWidth = 0.9;
+        ctx.beginPath();
+        ctx.ellipse(x, y, seedSize * 0.8, seedSize * 0.95, seed.angle, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        // Highlight realista (brillo)
+        const highlightAngle = seed.angle + Math.PI * 0.3;
+        const highlightX = x + Math.cos(highlightAngle) * seedSize * 0.3;
+        const highlightY = y + Math.sin(highlightAngle) * seedSize * 0.3;
+        
+        const highlightGradient = ctx.createRadialGradient(
+          highlightX, highlightY, 0,
+          highlightX, highlightY, seedSize * 0.55
+        );
+        highlightGradient.addColorStop(0, `hsla(${hue + 10}, ${saturation + 20}%, ${lightness + 30}%, 0.7)`);
+        highlightGradient.addColorStop(0.5, `hsla(${hue + 5}, ${saturation + 10}%, ${lightness + 15}%, 0.3)`);
+        highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        
+        ctx.fillStyle = highlightGradient;
+        ctx.beginPath();
+        ctx.ellipse(highlightX, highlightY, seedSize * 0.35, seedSize * 0.45, seed.angle, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Línea de textura en algunas semillas
+        if (Math.random() > 0.7) {
+          ctx.strokeStyle = `hsla(${hue}, ${saturation}%, ${lightness - 15}%, 0.4)`;
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(x - seedSize * 0.25, y);
+          ctx.lineTo(x + seedSize * 0.25, y);
+          ctx.stroke();
+        }
+      });
+      
+      // Efecto de profundidad en el centro
+      const depthGradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, centerRadius * 0.25);
+      depthGradient.addColorStop(0, 'rgba(0, 0, 0, 0.3)');
+      depthGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = depthGradient;
+      ctx.beginPath();
+      ctx.arc(cx, cy, centerRadius * 0.25, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Highlight general en el centro
+      const centerHighlight = ctx.createRadialGradient(
+        cx - centerRadius * 0.12, cy - centerRadius * 0.12, 0,
+        cx - centerRadius * 0.12, cy - centerRadius * 0.12, centerRadius * 0.35
+      );
+      centerHighlight.addColorStop(0, 'rgba(139, 90, 43, 0.3)');
+      centerHighlight.addColorStop(1, 'rgba(139, 90, 43, 0)');
+      ctx.fillStyle = centerHighlight;
+      ctx.beginPath();
+      ctx.arc(cx - centerRadius * 0.12, cy - centerRadius * 0.12, centerRadius * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    
+    function drawButterfly(ctx, x, y, size) {
+      ctx.save();
+      ctx.translate(x, y);
+      
+      // Colores aleatorios para las alas
+      const wingColors = [
+        ['#FF6B9D', '#C44569'],
+        ['#FFA07A', '#FF6347'],
+        ['#87CEEB', '#4682B4'],
+        ['#DDA0DD', '#BA55D3'],
+        ['#F0E68C', '#FFD700']
+      ];
+      const colorScheme = wingColors[Math.floor(Math.random() * wingColors.length)];
+      
+      // Ala izquierda superior
+      const gradientL1 = ctx.createRadialGradient(-15 * size, -10 * size, 0, -15 * size, -10 * size, 20 * size);
+      gradientL1.addColorStop(0, colorScheme[0]);
+      gradientL1.addColorStop(1, colorScheme[1]);
+      ctx.fillStyle = gradientL1;
+      ctx.beginPath();
+      ctx.ellipse(-15 * size, -10 * size, 18 * size, 12 * size, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = colorScheme[1];
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      
+      // Ala derecha superior
+      const gradientR1 = ctx.createRadialGradient(15 * size, -10 * size, 0, 15 * size, -10 * size, 20 * size);
+      gradientR1.addColorStop(0, colorScheme[0]);
+      gradientR1.addColorStop(1, colorScheme[1]);
+      ctx.fillStyle = gradientR1;
+      ctx.beginPath();
+      ctx.ellipse(15 * size, -10 * size, 18 * size, 12 * size, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = colorScheme[1];
+      ctx.stroke();
+      
+      // Ala izquierda inferior
+      ctx.fillStyle = colorScheme[1];
+      ctx.beginPath();
+      ctx.ellipse(-12 * size, 8 * size, 14 * size, 10 * size, -0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = colorScheme[1];
+      ctx.stroke();
+      
+      // Ala derecha inferior
+      ctx.fillStyle = colorScheme[1];
+      ctx.beginPath();
+      ctx.ellipse(12 * size, 8 * size, 14 * size, 10 * size, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = colorScheme[1];
+      ctx.stroke();
+      
+      // Cuerpo
+      ctx.fillStyle = '#2C2416';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 3 * size, 15 * size, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Cabeza
+      ctx.beginPath();
+      ctx.arc(0, -12 * size, 4 * size, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Antenas
+      ctx.strokeStyle = '#2C2416';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, -14 * size);
+      ctx.quadraticCurveTo(-3 * size, -18 * size, -5 * size, -20 * size);
+      ctx.moveTo(0, -14 * size);
+      ctx.quadraticCurveTo(3 * size, -18 * size, 5 * size, -20 * size);
+      ctx.stroke();
+      
+      // Puntos en antenas
+      ctx.fillStyle = '#2C2416';
+      ctx.beginPath();
+      ctx.arc(-5 * size, -20 * size, 1.5 * size, 0, Math.PI * 2);
+      ctx.arc(5 * size, -20 * size, 1.5 * size, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.restore();
+    }
+    
+    function drawBee(ctx, x, y) {
+      ctx.save();
+      ctx.translate(x, y);
+      
+      // Alas (atrás)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.strokeStyle = 'rgba(200, 200, 200, 0.8)';
+      ctx.lineWidth = 1;
+      
+      // Ala izquierda
+      ctx.beginPath();
+      ctx.ellipse(-8, -5, 12, 8, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      
+      // Ala derecha
+      ctx.beginPath();
+      ctx.ellipse(8, -5, 12, 8, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+      
+      // Cuerpo principal
+      ctx.fillStyle = '#FFD700';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 10, 14, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Rayas negras
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(-8, -4);
+      ctx.lineTo(8, -4);
+      ctx.moveTo(-9, 2);
+      ctx.lineTo(9, 2);
+      ctx.moveTo(-8, 8);
+      ctx.lineTo(8, 8);
+      ctx.stroke();
+      
+      // Cabeza
+      ctx.fillStyle = '#000000';
+      ctx.beginPath();
+      ctx.arc(0, -12, 6, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Ojos
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(-2, -12, 2, 0, Math.PI * 2);
+      ctx.arc(2, -12, 2, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.fillStyle = '#000000';
+      ctx.beginPath();
+      ctx.arc(-2, -12, 1, 0, Math.PI * 2);
+      ctx.arc(2, -12, 1, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Antenas
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(-3, -16);
+      ctx.lineTo(-5, -22);
+      ctx.moveTo(3, -16);
+      ctx.lineTo(5, -22);
+      ctx.stroke();
+      
+      ctx.fillStyle = '#000000';
+      ctx.beginPath();
+      ctx.arc(-5, -22, 1.5, 0, Math.PI * 2);
+      ctx.arc(5, -22, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Aguijón
+      ctx.fillStyle = '#000000';
+      ctx.beginPath();
+      ctx.moveTo(-2, 13);
+      ctx.lineTo(0, 18);
+      ctx.lineTo(2, 13);
+      ctx.closePath();
+      ctx.fill();
+      
+      ctx.restore();
+    }
+
+    // ---- Partículas Doradas ----
+    function createParticles() {
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 25; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 6 + 's';
+        p.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        container.appendChild(p);
+      }
+    }
+
+    // ---- Elementos flotantes ----
+    function createFloatingElements() {
+      const container = document.getElementById('floatingElements');
+      const symbols = ['✨', '⭐', '🌟', '💫', '✨'];
+      
+      for (let i = 0; i < 15; i++) {
+        const element = document.createElement('div');
+        element.className = 'floating-star';
+        element.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        element.style.left = Math.random() * 100 + '%';
+        element.style.top = Math.random() * 100 + '%';
+        element.style.animationDelay = Math.random() * 3 + 's';
+        element.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        container.appendChild(element);
+      }
+    }
+
+    // ---- Carta de Amistad Interactiva ----
+    const introScreen = document.getElementById('introScreen');
+    const friendshipLetter = document.getElementById('friendshipLetter');
+    const dateInput = document.getElementById('dateInput');
+    const openBtn = document.getElementById('openBtn');
+    const backBtn = document.getElementById('backBtn');
+    const errorMessage = document.getElementById('errorMessage');
+    const qrContainer = document.getElementById('qrContainer');
+    const scratchOverlay = document.getElementById('scratchOverlay');
+    const qrCode = document.getElementById('qrCode');
+    const specialDate = '2025-10-25';
+
+    function showError(msg) {
+      errorMessage.textContent = msg;
+      errorMessage.classList.add('show');
+      setTimeout(() => errorMessage.classList.remove('show'), 3000);
+    }
+
+    function openLetter() {
+      if (!dateInput.value) return showError('Por favor, selecciona una fecha');
+      if (dateInput.value !== specialDate) return showError('¡Esa no es nuestra fecha especial! 😉');
+      
+      // ¡Explosión de emojis al abrir la carta!
+      createEmojiExplosion();
+      
+      introScreen.style.display = 'none';
+      friendshipLetter.style.display = 'block';
+    }
+
+    function goBack() {
+      friendshipLetter.style.display = 'none';
+      introScreen.style.display = 'block';
+      scratchOverlay.style.opacity = '1';
+      scratchOverlay.classList.remove('scratching');
+      qrCode.classList.remove('revealed');
+    }
+
+    function scratchEffect() {
+      scratchOverlay.classList.add('scratching');
+      
+      // ¡Explosión de emojis al raspar!
+      createEmojiExplosion();
+      
+      setTimeout(() => {
+        scratchOverlay.style.opacity = '0';
+        qrCode.classList.add('revealed');
+        createSparkles();
+      }, 400);
+      
+      setTimeout(() => {
+        if (confirm('¿Quieres escuchar nuestra canción especial? 🎵')) {
+          window.open('https://youtu.be/y7fN6YNFnJ4?si=2wab4LZ6WNTzeUAa', '_blank');
+        }
+      }, 1200);
+    }
+
+    function createSparkles() {
+      for (let i = 0; i < 15; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.textContent = '✨';
+        sparkle.style.position = 'absolute';
+        sparkle.style.color = '#FFD700';
+        sparkle.style.fontSize = '20px';
+        sparkle.style.left = Math.random() * 100 + '%';
+        sparkle.style.top = '100%';
+        sparkle.style.pointerEvents = 'none';
+        sparkle.style.zIndex = '1000';
+        sparkle.style.animation = 'floatUp 3s ease-out forwards';
+        sparkle.style.animationDelay = (i * 0.1) + 's';
+        document.body.appendChild(sparkle);
+        
+        setTimeout(() => sparkle.remove(), 3000);
+      }
+    }
+
+    // Agregar animación de flotación
+    const styleAnimation = document.createElement('style');
+    styleAnimation.textContent = `
+      @keyframes floatUp {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-150vh) rotate(360deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(styleAnimation);
+
+    // Event listeners
+    openBtn.addEventListener('click', openLetter);
+    backBtn.addEventListener('click', goBack);
+    qrContainer.addEventListener('click', scratchEffect);
+    dateInput.addEventListener('keypress', e => {
+      if (e.key === 'Enter') openLetter();
+    });
+
+    // Inicialización
+    window.addEventListener('load', () => {
+      createParticles();
+      createFloatingElements();
+      dateInput.setAttribute('min', '2020-01-01');
+      dateInput.setAttribute('max', '2025-12-31');
+    });
+  </script>
+</body>
+</html>
